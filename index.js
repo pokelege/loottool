@@ -150,7 +150,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
             break;
 			case "/blockify":
-			var text = "";
+			var text = message.text;
 			if (text.length < 1) {
 			    slashCommand.replyPrivate(message, "Please give me text to process.");
 			    break;
