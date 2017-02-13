@@ -150,17 +150,17 @@ controller.on('slash_command', function (slashCommand, message) {
 
             break;
 			case "/blockify":
-			var text = message.text;
+			var text = message.text.toLowerCase();
 			if (text.length < 1) {
 			    slashCommand.replyPrivate(message, "Please give me text to process.");
 			    break;
 			}
 			var toSend = "";
-			for (var i in text.toLowerCase())
+			for (var i = 0; i < text.length; ++i)
 			{
-				if (dict[i] !== undefined)
+				if (dict[text.charAt(i)] !== undefined)
 				{
-				    toSend += dict[i];
+				    toSend += dict[text.charAt(i)];
 				}
 				else
 				{
