@@ -85,6 +85,46 @@ controller.setupWebserver(process.env.PORT, function (err, webserver) {
 // BEGIN EDITING HERE!
 //
 
+var dict =
+{
+	'r': ":arr:",
+	'a': ":ay:",
+	'b': ":be:",
+	'c': ":cee:",
+	'd': ":dee:",
+	'w': ":dubyoo:",
+	'e': ":ee:",
+	'f': ":eff:",
+	'x': ":ehcks:",
+	'l': ":ell:",
+	'm': ":emm:",
+	'n': ":en:",
+	's': ":ess:",
+	'g': ":gee:",
+	'h': ":hhh:",
+	'i': ":iii:",
+	'j': ":jay:",
+	'k': ":kay:",
+	'o': ":ooo:",
+	'p': ":pee:",
+	'q': ":queue:",
+	't': ":tee:",
+	'v': ":vee:",
+	'y': ":why:",
+	'u': ":yoo:",
+	'z': ":zee:",
+	'0': ":0:",
+	'1': ":1:",
+	'2': ":2:",
+	'3': ":3:",
+	'4': ":4:",
+	'5': ":5:",
+	'6': ":6:",
+	'7':":7:",
+	'8':":8:",
+	'9':":9:",
+};
+
 controller.on('slash_command', function (slashCommand, message) {
     switch (message.command) {
         case "/echo": //handle the `/echo` slash command. We might have others assigned to this app too!
@@ -109,6 +149,26 @@ controller.on('slash_command', function (slashCommand, message) {
             });
 
             break;
+			case "/blockify":
+			var text = "";
+			if (text.length < 1) {
+			    slashCommand.replyPrivate(message, "Please give me text to process.");
+			    break;
+			}
+			var toSend = "";
+			for (var i in text.toLowerCase())
+			{
+				if (dict[i] !== undefined)
+				{
+				    toSend += dict[i];
+				}
+				else
+				{
+					toSend += ":shakeyschicken:";
+				}
+			}
+			slashCommand.replyPublic(message, toSend);
+			break;
         default:
             slashCommand.replyPublic(message, "I'm afraid I don't know how to " + message.command + " yet.");
 
