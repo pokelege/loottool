@@ -155,6 +155,7 @@ controller.on('slash_command', function (slashCommand, message) {
 			    slashCommand.replyPrivate(message, "Please give me text to process.");
 			    break;
 			}
+
 			var toSend = "";
 			for (var i = 0; i < text.length; ++i)
 			{
@@ -164,13 +165,13 @@ controller.on('slash_command', function (slashCommand, message) {
 				}
 				else
 				{
-					toSend += ":shakeyschicken:";
+				    toSend += ":spc:";
 				}
 			}
 			slashCommand.replyPublic(message, toSend);
 			break;
         default:
-            slashCommand.replyPublic(message, "I'm afraid I don't know how to " + message.command + " yet.");
+            slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + message.command + " yet.");
 
     }
 
