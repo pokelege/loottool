@@ -42,10 +42,27 @@
 
 /* Uses the slack button feature to offer a real time bot to multiple teams */
 var Botkit = require('botkit');
+var env = {
+	CLIENT_ID: "136415683815.141664100823",
+	CLIENT_SECRET: "55661a68b7b751055f2d39de8cb98713",
+	PORT: 3000,
+	VERIFICATION_TOKEN: "yKUPP5C5LSc0eq84l9v9SH3y"
+}
 
-if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT || !process.env.VERIFICATION_TOKEN) {
-    console.log('Error: Specify CLIENT_ID, CLIENT_SECRET, VERIFICATION_TOKEN and PORT in environment');
-    process.exit(1);
+if(process.env.CLIENT_ID){
+	env.CLIENT_ID = process.env.CLIENT_ID;
+}
+
+if(process.env.CLIENT_SECRET){
+	env.CLIENT_SECRET = process.env.CLIENT_SECRET;
+}
+
+if(process.env.PORT){
+	env.PORT = process.env.PORT;
+}
+
+if(process.env.VERIFICATION_TOKEN){
+	env.VERIFICATION_TOKEN = process.env.VERIFICATION_TOKEN;
 }
 
 var config = {}
@@ -62,13 +79,13 @@ if (process.env.MONGOLAB_URI) {
 
 var controller = Botkit.slackbot(config).configureSlackApp(
     {
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
+        clientId: env.CLIENT_ID,
+        clientSecret: env.CLIENT_SECRET,
         scopes: ['commands'],
     }
 );
 
-controller.setupWebserver(process.env.PORT, function (err, webserver) {
+controller.setupWebserver(env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
 
     controller.createOauthEndpoints(controller.webserver, function (err, req, res) {
@@ -132,7 +149,7 @@ controller.on('slash_command', function (slashCommand, message) {
             // Otherwise just echo back to them what they sent us.
 
             // but first, let's make sure the token matches!
-            if (message.token !== process.env.VERIFICATION_TOKEN) return; //just ignore it.
+            if (message.token !== env.VERIFICATION_TOKEN) return; //just ignore it.
 
             // if no text was supplied, treat it as a help command
             if (message.text === "" || message.text === "help") {
