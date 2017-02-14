@@ -149,8 +149,14 @@ controller.on('slash_command', function (slashCommand, message) {
             });
 
             break;
-			case "/blockify":
-			var text = message.text.toLowerCase();
+        case "/blockify":
+            var regex = /(:\w+:)(.*)/g;
+            var results = regex.exec(message.text);
+            var text;
+            if (results !== null)
+                text = results[2].toLowerCase();
+            else
+                text = message.text.toLowerCase();
 			if (text.length < 1) {
 			    slashCommand.replyPrivate(message, "Please give me text to process.");
 			    break;
@@ -165,10 +171,13 @@ controller.on('slash_command', function (slashCommand, message) {
 				}
 				else
 				{
-				    toSend += ":spc:";
+				    if (results !== null)
+				        toSend += results[1];
+                    else toSend += ":spc:";
 				}
 			}
-			slashCommand.replyPublic(message, toSend);
+			slashCommand.replyAcknowledge();
+			slashCommand.replyPublicDelayed(message, toSend);
 			break;
         default:
             slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + message.command + " yet.");
