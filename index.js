@@ -154,7 +154,7 @@ controller.on('slash_command', function (slashCommand, message) {
             var results = regex.exec(message.text);
             var text;
             if (results !== null)
-                text = results[2].toLowerCase();
+                text = results[2].trim().toLowerCase();
             else
                 text = message.text.toLowerCase();
 			if (text.length < 1) {
