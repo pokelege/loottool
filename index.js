@@ -176,8 +176,7 @@ controller.on('slash_command', function (slashCommand, message) {
                     else toSend += ":spc:";
 				}
 			}
-			slashCommand.replyAcknowledge();
-			slashCommand.replyPublicDelayed(message, toSend);
+			slashCommand.replyPublic(message, toSend);
 			break;
         default:
             slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + message.command + " yet.");
