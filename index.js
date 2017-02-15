@@ -65,7 +65,7 @@ if(process.env.VERIFICATION_TOKEN){
 	env.VERIFICATION_TOKEN = process.env.VERIFICATION_TOKEN;
 }
 
-var config = {}
+var config = { hostname:"52.24.204.8" }
 if (process.env.MONGOLAB_URI) {
     var BotkitStorage = require('botkit-storage-mongo');
     config = {
@@ -82,6 +82,7 @@ var controller = Botkit.slackbot(config).configureSlackApp(
         clientId: env.CLIENT_ID,
         clientSecret: env.CLIENT_SECRET,
         scopes: ['commands'],
+        hostname: "52.24.204.8"
     }
 );
 
