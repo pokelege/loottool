@@ -27,6 +27,7 @@
   "dependencies": {
     "botkit": "0.0.5",
     "botkit-storage-mongo": "*",
-    "mongodb": "*"
+    "mongodb": "*",
+	"co": "*"
   }
 }

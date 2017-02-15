@@ -143,6 +143,29 @@ var dict =
 	'9':":9:",
 };
 
+var coroutine = require('co');
+var MongoClient = require('mongodb').MongoClient;
+var addCharacter = function* (slashCommand, message, character) {
+        // Connection URL
+    var url = process.env.MONGOLAB_URI;
+        // Use connect method to connect to the Server
+    var db = yield MongoClient.connect(url);
+
+    var exist = yield db.collection("characters").find({name: character}).limit(1).toArray();
+    if(exist.length < 1){
+        yield db.collection("characters").insertOne({name:character, stars: ((Math.random() * 1000) % 6) + 1});
+    }
+    // Close the connection
+    db.close();
+
+    slashCommand.replyPrivate(message, "added " + character);
+};
+
+var exceptionCo = function(slashCommand, message, errorMessage, err){
+    console.log(err.stack);
+    slashCommand.replyPrivate(message, errorMessage);
+}
+
 controller.on('slash_command', function (slashCommand, message) {
     switch (message.command) {
         case "/echo": //handle the `/echo` slash command. We might have others assigned to this app too!
@@ -200,6 +223,17 @@ controller.on('slash_command', function (slashCommand, message) {
 			}
 			slashCommand.replyPublic(message, toSend);
 			break;
+        case "/gacha":
+            var text = message.text.trim().split(" ");
+            switch(text[0]){
+                case "add":
+                    slashCommand.replyPrivate(message, "adding " + text[1]);
+                    co(addCharacter.bind(this, text[1])).catch(exceptionCo.bind(this, slashCommand, message, "failed to add " + text[1]));
+                    break;
+                default:
+                    slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + text[0] + " yet.");
+            }
+            break;
         default:
             slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + message.command + " yet.");
 
