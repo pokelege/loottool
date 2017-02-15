@@ -228,7 +228,7 @@ controller.on('slash_command', function (slashCommand, message) {
             switch(text[0]){
                 case "add":
                     slashCommand.replyPrivate(message, "adding " + text[1]);
-                    coroutine(addCharacter.bind(this, text[1])).catch(exceptionCo.bind(this, slashCommand, message, "failed to add " + text[1]));
+                    coroutine(addCharacter.bind(this, slashCommand, message, text[1])).catch(exceptionCo.bind(this, slashCommand, message, "failed to add " + text[1]));
                     break;
                 default:
                     slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + text[0] + " yet.");
