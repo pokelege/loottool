@@ -153,13 +153,35 @@ var addCharacter = function* (slashCommand, message, character) {
 
     var exist = yield db.collection("characters").find({name: character}).limit(1).toArray();
     if(exist.length < 1){
-        yield db.collection("characters").insertOne({name:character, stars: ((Math.random() * 1000) % 6) + 1});
+        yield db.collection("characters").insertOne({name:character, stars: (Math.floor(Math.random() * 1000) % 6) + 1});
     }
     // Close the connection
     db.close();
 
     slashCommand.replyPrivate(message, "added " + character);
 };
+
+var listCharacters = function*(slashCommand, message) {
+    // Connection URL
+    var url = process.env.MONGOLAB_URI;
+    // Use connect method to connect to the Server
+    var db = yield MongoClient.connect(url);
+
+    var list = yield db.collection("characters").find();
+    var listString = "";
+    while(yield list.hasNext()) {
+        var character = yield list.next();
+        listString += character.name;
+        for(var i = 0; i < character.stars; ++i){
+            listString += "\u2605";
+        }
+        listString += "\n";
+    }
+    // Close the connection
+    db.close();
+
+    slashCommand.replyPrivate(message, listString);
+}
 
 var exceptionCo = function(slashCommand, message, errorMessage, err){
     console.log(err.stack);
@@ -228,6 +250,9 @@ controller.on('slash_command', function (slashCommand, message) {
             switch(text[0]){
                 case "add":
                     coroutine(addCharacter.bind(this, slashCommand, message, text[1])).catch(exceptionCo.bind(this, slashCommand, message, "failed to add " + text[1]));
+                    break;
+                case "list":
+                    coroutine(listCharacters.bind(this, slashCommand, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to list characters"));
                     break;
                 default:
                     slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + text[0] + " yet.");
