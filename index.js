@@ -171,6 +171,7 @@ var listCharacters = function*(slashCommand, message) {
     var listString = "";
     while(yield list.hasNext()) {
         var character = list.next();
+        console.dir(character);
         listString += character.name;
         for(var i = 0; i < character.stars; ++i){
             listString += "\u2605";
