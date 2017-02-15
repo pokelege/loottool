@@ -168,7 +168,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
             break;
         case "/blockify":
-            var regex = /(:\w+:)(.*)/g;
+            var regex = /(:\w+:)([\s\S]*)/gm;
             var results = regex.exec(message.text);
             var text;
             if (results !== null)
@@ -179,7 +179,7 @@ controller.on('slash_command', function (slashCommand, message) {
 			    slashCommand.replyPrivate(message, "Please give me text to process.");
 			    break;
 			}
-
+			console.log(text);
 			var toSend = "";
 			for (var i = 0; i < text.length; ++i)
 			{
