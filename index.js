@@ -170,8 +170,7 @@ var listCharacters = function*(slashCommand, message) {
     var list = db.collection("characters").find({});
     var listString = "";
     while(yield list.hasNext()) {
-        var character = list.next();
-        console.dir(character);
+        var character = yield list.next();
         listString += character.name;
         for(var i = 0; i < character.stars; ++i){
             listString += "\u2605";
