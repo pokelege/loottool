@@ -187,6 +187,10 @@ controller.on('slash_command', function (slashCommand, message) {
 				{
 				    toSend += dict[text.charAt(i)];
 				}
+				else if(text.charAt(i) === "\n")
+				{
+				    toSend += text.charAt(i);
+				}
 				else
 				{
 				    if (results !== null)
