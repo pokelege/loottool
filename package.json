@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/pokelege/loottool",
   "engines": {
-    "node": "5.1.1"
+    "node": "*"
   },
   "dependencies": {
     "botkit": "*",
