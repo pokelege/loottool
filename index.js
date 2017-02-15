@@ -65,7 +65,7 @@ if(process.env.VERIFICATION_TOKEN){
 	env.VERIFICATION_TOKEN = process.env.VERIFICATION_TOKEN;
 }
 
-var config = { hostname: "52.24.204.8" };
+var config = { hostname:"52.24.204.8" }
 if (process.env.MONGOLAB_URI) {
     var BotkitStorage = require('botkit-storage-mongo');
     config = {
