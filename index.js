@@ -158,7 +158,7 @@ var addCharacter = function* (slashCommand, message, character) {
     // Close the connection
     db.close();
 
-    slashCommand.replyPrivate(message, "added " + character);
+    slashCommand.replyPublic(message, "added " + character);
 };
 
 var listCharacters = function*(slashCommand, message) {
@@ -181,7 +181,25 @@ var listCharacters = function*(slashCommand, message) {
     db.close();
 
     slashCommand.replyPrivate(message, listString);
-}
+};
+
+var pullCharacter = function*(slashCommand, message){
+    // Connection URL
+    var url = process.env.MONGOLAB_URI;
+    // Use connect method to connect to the Server
+    var db = yield MongoClient.connect(url);
+
+    var list = yield db.collection("characters").find({}).toArray();
+    var randomnumber = Math.floor(Math.floor(Math.random() * 1000) % list.length);
+    var toReturn = list[randomnumber].name;
+    for(var i = 0; i < list[randomnumber].stars; ++i){
+        toReturn += "\u2605";
+    }
+    // Close the connection
+    db.close();
+
+    slashCommand.replyPublic(message, toReturn);
+};
 
 var exceptionCo = function(slashCommand, message, errorMessage, err){
     console.log(err.stack);
@@ -253,6 +271,9 @@ controller.on('slash_command', function (slashCommand, message) {
                     break;
                 case "list":
                     coroutine(listCharacters.bind(this, slashCommand, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to list characters"));
+                    break;
+                case "pull":
+                    coroutine(pullCharacter.bind(this, slashCommand, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to pull... wtf"));
                     break;
                 default:
                     slashCommand.replyPrivate(message, "I'm afraid I don't know how to " + text[0] + " yet.");
