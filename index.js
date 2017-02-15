@@ -167,7 +167,7 @@ var listCharacters = function*(slashCommand, message) {
     // Use connect method to connect to the Server
     var db = yield MongoClient.connect(url);
 
-    var list = db.collection("characters").find();
+    var list = db.collection("characters").find({});
     var listString = "";
     while(yield list.hasNext()) {
         var character = list.next();
