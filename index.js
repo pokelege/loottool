@@ -65,7 +65,7 @@ if(process.env.VERIFICATION_TOKEN){
 	env.VERIFICATION_TOKEN = process.env.VERIFICATION_TOKEN;
 }
 
-var config = { hostname:"52.24.204.8" }
+var config = {}
 if (process.env.MONGOLAB_URI) {
     var BotkitStorage = require('botkit-storage-mongo');
     config = {
@@ -81,8 +81,7 @@ var controller = Botkit.slackbot(config).configureSlackApp(
     {
         clientId: env.CLIENT_ID,
         clientSecret: env.CLIENT_SECRET,
-        scopes: ['commands'],
-        hostname: "52.24.204.8"
+        scopes: ['commands', 'bot'],
     }
 );
 
@@ -167,7 +166,7 @@ var addCharacter = function* (slashCommand, message, character) {
         }
     } else{
         try{
-            slashCommand.replyPublic(message, "already added " + character);
+            slashCommand.replyPrivate(message, "already added " + character);
         }
         catch (e){
             console.dir(e);
@@ -303,3 +302,9 @@ controller.on('slash_command', function (slashCommand, message) {
 })
 ;
 
+controller.on('outgoing_webhook',function(bot,message) {
+    console.log(message.text);
+    if(!message.text.includes("/gacha") && message.text.includes("dreams;pull;")){
+        coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to pull... wtf"));
+    }
+});
