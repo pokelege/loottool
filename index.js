@@ -254,7 +254,10 @@ controller.on('slash_command', function (slashCommand, message) {
 controller.on('outgoing_webhook',function(bot,message) {
 	switch(message.token){
 		case process.env.GACHA_PULL_TOKEN:
-			coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to pull... wtf"));
+			coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, bot, message, "failed to pull... wtf"));
+			break;
+			default:
+			bot.replyPrivate(message, "wtf");
 			break;
 	}
 });
