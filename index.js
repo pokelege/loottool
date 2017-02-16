@@ -252,8 +252,9 @@ controller.on('slash_command', function (slashCommand, message) {
 ;
 
 controller.on('outgoing_webhook',function(bot,message) {
-    console.log(message.text);
-    if(!message.text.includes("/gacha") && message.text.includes("dreams;pull;")){
-        coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to pull... wtf"));
-    }
+	switch(message.token){
+		case process.env.GACHA_PULL_TOKEN:
+			coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, slashCommand, message, "failed to pull... wtf"));
+			break;
+	}
 });
