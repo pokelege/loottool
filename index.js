@@ -68,24 +68,28 @@ controller.setupWebserver(env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
 });
 
-var services = [require('lib/loottool/BlockifierService')];
+var services = [require('./lib/loottool/BlockifierService.js'),
+				require('./lib/loottool/GachaService.js')];
 
 //
 // BEGIN EDITING HERE!
 //
 
 controller.on('slash_command', function (slashCommand, message) {
-
+	for(var i = 0; i < services.length; ++i){
+		if(services[i].resolveSlash(slashCommand, message){
+			return;
+		}
+	}
+	bot.replyPrivate(message, "I don't understand: " + message.command);
 })
 ;
 
 controller.on('outgoing_webhook',function(bot,message) {
-	switch(message.token){
-		case process.env.GACHA_PULL_TOKEN:
-			coroutine(pullCharacter.bind(this, bot, message)).catch(exceptionCo.bind(this, bot, message, "failed to pull... wtf"));
-			break;
-			default:
-			bot.replyPrivate(message, "wtf");
-			break;
+	for(var i = 0; i < services.length; ++i){
+		if(services[i].resolveOutHook(bot, message){
+			return;
+		}
 	}
+	  bot.replyPrivate(message, "I don't understand: " + message.trigger_word);
 });
