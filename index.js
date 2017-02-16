@@ -153,12 +153,28 @@ var addCharacter = function* (slashCommand, message, character) {
 
     var exist = yield db.collection("characters").find({name: character}).limit(1).toArray();
     if(exist.length < 1){
-        yield db.collection("characters").insertOne({name:character, stars: (Math.floor(Math.random() * 1000) % 6) + 1});
+        var star = (Math.floor(Math.random() * 1000) % 6) + 1;
+        yield db.collection("characters").insertOne({name:character, stars: star});
+        try{
+            var messageString =  "added " + character;
+            for(var i = 0; i < star; ++i){
+                messageString += "\u2605";
+            }
+            slashCommand.replyPublic(message, messageString);
+        }
+        catch (e){
+            console.dir(e);
+        }
+    } else{
+        try{
+            slashCommand.replyPublic(message, "already added " + character);
+        }
+        catch (e){
+            console.dir(e);
+        }
     }
     // Close the connection
     db.close();
-
-    slashCommand.replyPublic(message, "added " + character);
 };
 
 var listCharacters = function*(slashCommand, message) {
