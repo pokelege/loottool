@@ -77,7 +77,7 @@ var services = [require('./lib/loottool/BlockifierService.js'),
 
 controller.on('slash_command', function (slashCommand, message) {
 	for(var i = 0; i < services.length; ++i){
-		if(services[i].resolveSlash(slashCommand, message){
+		if(services[i].resolveSlash(slashCommand, message)){
 			return;
 		}
 	}
@@ -87,7 +87,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
 controller.on('outgoing_webhook',function(bot,message) {
 	for(var i = 0; i < services.length; ++i){
-		if(services[i].resolveOutHook(bot, message){
+		if(services[i].resolveOutHook(bot, message)){
 			return;
 		}
 	}
