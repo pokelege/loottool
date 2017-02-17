@@ -70,8 +70,8 @@ controller.setupWebserver(env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
 });
 
-var services = [new require('./lib/loottool/BlockifierService'),
-				new require('./lib/loottool/GachaService')];
+var services = [new require('./lib/loottool/BlockifierService')(),
+				new require('./lib/loottool/GachaService')()];
 
 //
 // BEGIN EDITING HERE!
