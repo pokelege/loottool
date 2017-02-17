@@ -80,8 +80,6 @@ var services = [new BlockifierService(),
 
 controller.on('slash_command', function (slashCommand, message) {
     for (var i = 0; i < services.length; ++i) {
-        console.dir(services);
-        console.dir(services[i]);
 		if(services[i].resolveSlash(slashCommand, message)){
 			return;
 		}
