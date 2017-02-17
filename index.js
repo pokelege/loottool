@@ -63,7 +63,7 @@ if (process.env.MONGOLAB_URI) {
 }
 
 config.hostname = '0.0.0.0';
-
+config.debug = true;
 var controller = Botkit.slackbot(config);
 
 controller.setupWebserver(env.PORT, function (err, webserver) {
