@@ -69,9 +69,10 @@ var controller = Botkit.slackbot(config);
 controller.setupWebserver(env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
 });
-
-var services = [new require('./lib/loottool/BlockifierService')(),
-				new require('./lib/loottool/GachaService')()];
+var BlockifierService = require('./lib/loottool/BlockifierService');
+var GachaService = require('./lib/loottool/GachaService');
+var services = [new BlockifierService(),
+				new GachaService()];
 
 //
 // BEGIN EDITING HERE!
