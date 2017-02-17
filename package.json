@@ -25,9 +25,6 @@
     "node": "*"
   },
   "dependencies": {
-    "botkit": "*",
-    "botkit-storage-mongo": "*",
-    "mongodb": "*",
-	"co": "*"
+
   }
 }
