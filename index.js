@@ -104,3 +104,12 @@ controller.on('outgoing_webhook',function(bot,message) {
 	}
 	  bot.replyPrivate(message, "I don't understand: " + message.trigger_word);
 });
+
+controller.on('interactive_message_callback', function(bot, message) {
+	for(var i = 0; i < services.length; ++i){
+		if(services[i].resolveInteractive(bot, message)){
+			return;
+		}
+	}
+	  bot.replyPrivate(message, "I don't understand that");
+};
