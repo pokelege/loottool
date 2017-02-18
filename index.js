@@ -112,4 +112,4 @@ controller.on('interactive_message_callback', function(bot, message) {
 		}
 	}
 	  bot.replyPrivate(message, "I don't understand that");
-};
+});
