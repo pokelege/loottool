@@ -64,10 +64,18 @@ if (process.env.MONGOLAB_URI) {
 
 config.hostname = '0.0.0.0';
 config.debug = false;
+var appConfig = {};
+appConfig.clientId = process.env.CLIENT_ID;
+appConfig.clientSecret = process.env.CLIENT_SECRET;
+appConfig.scopes = ["commands'];
+
 var controller = Botkit.slackbot(config);
+controller.configureSlackApp(appConfig);
 
 controller.setupWebserver(env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
+	
+	controller.createOauthEndpoints(controller.webserver);
 });
 var BlockifierService = require('./lib/loottool/BlockifierService');
 var GachaService = require('./lib/loottool/GachaService');
