@@ -69,27 +69,17 @@ appConfig.appId = appConfig.clientId = process.env.CLIENT_ID;
 appConfig.appPassword = appConfig.clientSecret = process.env.CLIENT_SECRET;
 appConfig.scopes = ["commands", "bot", "users:read", "chat:write:bot", "channels:read", "emoji:read"];
 
-var controller;
-if(process.env.MS_BOT){
-	controller = Botkit.botframeworkbot({config});
-	var bot = controller.spawn(appConfig);
-	
-	controller.setupWebserver(env.PORT,function(err,webserver) {
-  controller.createWebhookEndpoints(controller.webserver, bot, function() {
-      console.log('This bot is online!!!');
-  });
-});
-} else {
-	controller = Botkit.slackbot(config);
-	controller.configureSlackApp(appConfig);
-	
-	controller.setupWebserver(env.PORT, function (err, webserver) {
-    controller.createWebhookEndpoints(controller.webserver);
-	
-	controller.createOauthEndpoints(controller.webserver);
-});
-}
+var controller = Botkit.slackbot(config);
+controller.configureSlackApp(appConfig);
 
+var msController = Botkit.botframeworkbot({config});
+var msBot = controller.spawn(appConfig);
+
+controller.setupWebserver(env.PORT, function (err, webserver) {
+   	controller.createWebhookEndpoints(webserver);
+	msController.createWebhookEndpoints(webserver, msBot);
+	controller.createOauthEndpoints(webserver);
+});
 
 var BlockifierService = require('./lib/loottool/BlockifierService');
 var GachaService = require('./lib/loottool/GachaService');
@@ -128,7 +118,7 @@ controller.on('interactive_message_callback', function(bot, message) {
 	  bot.replyPrivate(message, "I don't understand that");
 });
 
-controller.hears(['hello'], 'message_received', function(bot, message) {
+msController.hears(['hello'], 'message_received', function(bot, message) {
 
     bot.reply(message, 'Hey there.');
 
