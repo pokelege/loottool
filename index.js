@@ -73,7 +73,7 @@ var controller = Botkit.slackbot(config);
 controller.configureSlackApp(appConfig);
 
 var msController = Botkit.botframeworkbot({config});
-var msBot = controller.spawn(appConfig);
+var msBot = msController.spawn(appConfig);
 
 controller.setupWebserver(env.PORT, function (err, webserver) {
    	controller.createWebhookEndpoints(webserver);
