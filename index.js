@@ -67,7 +67,7 @@ config.debug = false;
 var appConfig = {};
 appConfig.clientId = process.env.CLIENT_ID;
 appConfig.clientSecret = process.env.CLIENT_SECRET;
-appConfig.scopes = ["commands", "bot", "users:read", "chat:write:bot", "channels:read"];
+appConfig.scopes = ["commands", "bot", "users:read", "chat:write:bot", "channels:read", "emoji:read"];
 
 var controller = Botkit.slackbot(config);
 controller.configureSlackApp(appConfig);
