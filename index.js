@@ -121,7 +121,8 @@ controller.on('interactive_message_callback', function(bot, message) {
 });
 
 msController.hears(['hello'], 'message_received', function(bot, message) {
-
+	console.dir(message);
+	console.dir(bot);
     bot.reply(message, 'Hey there.');
 
 });
