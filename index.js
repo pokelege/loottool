@@ -86,9 +86,11 @@ controller.setupWebserver(env.PORT, function (err, webserver) {
 var BlockifierService = require('./lib/loottool/BlockifierService');
 var GachaService = require('./lib/loottool/GachaService');
 var FileManagerService = require('./lib/loottool/FileManagerService');
+var LunchService = require('./lib/loottool/LunchService');
 var services = [new BlockifierService(),
 				new GachaService(),
-                new FileManagerService()];
+                new FileManagerService(),
+				new LunchService()];
 
 //
 // BEGIN EDITING HERE!
