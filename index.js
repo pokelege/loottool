@@ -69,7 +69,7 @@ appConfig.appId = process.env.APP_ID;
 appConfig.appPassword = process.env.APP_PASSWORD;
 appConfig.clientId = process.env.CLIENT_ID;
 appConfig.clientSecret = process.env.CLIENT_SECRET;
-appConfig.scopes = ["commands", "bot", "users:read", "chat:write:bot", "channels:read", "emoji:read"];
+appConfig.scopes = ["commands", "bot", "users:read", "chat:write:bot", "channels:read", "emoji:read", "files:read", "files:write:user"];
 
 var controller = Botkit.slackbot(config);
 controller.configureSlackApp(appConfig);
@@ -85,8 +85,10 @@ controller.setupWebserver(env.PORT, function (err, webserver) {
 
 var BlockifierService = require('./lib/loottool/BlockifierService');
 var GachaService = require('./lib/loottool/GachaService');
+var FileManagerService = require('./lib/loottool/FileManagerService');
 var services = [new BlockifierService(),
-				new GachaService()];
+				new GachaService(),
+                new FileManagerService()];
 
 //
 // BEGIN EDITING HERE!
